@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+   <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>  
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -8,8 +9,8 @@
     <AssemblyName>CivilesPro.RevitTools</AssemblyName>
   </PropertyGroup>
 
-  <!-- Referencias de Revit solo para net48 -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <!-- Referencias de Revit para net48 -->
+  <ItemGroup>
     <Reference Include="RevitAPI">
       <HintPath>$(ProgramFiles)\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
       <Private>false</Private>
@@ -23,20 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="App\CivilesProApp.cs" />
-    <Compile Include="App\RibbonManager.cs" />
-    <Compile Include="Commands\ImportarNiveles.cs" />
-    <Compile Include="Commands\CommandUtils.cs" />
-    <Compile Include="Core\Logger.cs" />
-    <Compile Include="Core\Helpers.cs" />
-    <Compile Include="FileReaders\CsvLevelReader.cs" />
     <None Include="App\CivilesPro.addin">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
-  <!-- Post-build: copia DLL y .addin a Addins de Revit instalados -->
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'net48'">
+  <!-- Post-build: copia DLL y .addin a Addins de Revit -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <PropertyGroup>
       <AddinsRoot>C:\ProgramData\Autodesk\Revit\Addins</AddinsRoot>
       <AddinFile>$(ProjectDir)App\CivilesPro.addin</AddinFile>
@@ -63,3 +57,4 @@
       }" />
   </Target>
 </Project>
+
