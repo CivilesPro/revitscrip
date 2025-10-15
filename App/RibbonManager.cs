@@ -10,7 +10,7 @@ namespace CivilesPro.RevitTools.App
     private const string TabName = "CivilesPro";
     private const string PanelName = "Automatizaciones";
 
-    public static void Build(UIControlledApplication app)
+    public static void Create(UIControlledApplication app)
     {
       try
       {
@@ -23,7 +23,7 @@ namespace CivilesPro.RevitTools.App
           "btnImportarNiveles",
           "Importar\nNiveles",
           asmPath,
-          "CivilesPro.RevitTools.Commands.ImportarNiveles");
+          "CivilesPro.RevitTools.Commands.ImportarNivelesCommand");
 
         var btn = panel.AddItem(pd) as PushButton;
         if (btn != null)

@@ -1,9 +1,7 @@
 using Autodesk.Revit.UI;
-using Autodesk.Revit.Attributes;
 
 namespace CivilesPro.RevitTools.App
 {
-  [Transaction(TransactionMode.Manual)]
   public class CivilesProApp : IExternalApplication
   {
     public static UIControlledApplication? UIApp { get; private set; }
@@ -11,7 +9,7 @@ namespace CivilesPro.RevitTools.App
     public Result OnStartup(UIControlledApplication application)
     {
       UIApp = application;
-      RibbonManager.Build(application);
+      RibbonManager.Create(application);
       return Result.Succeeded;
     }
 
