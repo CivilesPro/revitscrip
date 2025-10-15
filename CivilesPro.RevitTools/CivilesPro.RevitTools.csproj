@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <RootNamespace>CivilesPro.RevitTools</RootNamespace>
+    <AssemblyName>CivilesPro.RevitTools</AssemblyName>
+  </PropertyGroup>
+
+  <!-- Referencias de Revit solo para net48 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="RevitAPI">
+      <HintPath>$(ProgramFiles)\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>$(ProgramFiles)\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="App\CivilesProApp.cs" />
+    <Compile Include="App\RibbonManager.cs" />
+    <Compile Include="Commands\ImportarNiveles.cs" />
+    <Compile Include="Commands\CommandUtils.cs" />
+    <Compile Include="Core\Logger.cs" />
+    <Compile Include="Core\Helpers.cs" />
+    <Compile Include="FileReaders\CsvLevelReader.cs" />
+    <None Include="App\CivilesPro.addin">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <!-- Post-build: copia DLL y .addin a Addins de Revit instalados -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(TargetFramework)' == 'net48'">
+    <PropertyGroup>
+      <AddinsRoot>C:\ProgramData\Autodesk\Revit\Addins</AddinsRoot>
+      <AddinFile>$(ProjectDir)App\CivilesPro.addin</AddinFile>
+      <BuiltDll>$(TargetDir)$(AssemblyName).dll</BuiltDll>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <RevitYears Include="2023;2024;2025" />
+    </ItemGroup>
+
+    <Message Text="Instalando CivilesPro.RevitTools en carpetas Addins…" Importance="high" />
+
+    <Exec Command="powershell -ExecutionPolicy Bypass -NoProfile -Command ^
+      foreach($y in '%(RevitYears.Identity)'.Split(';')){ ^
+        $dst = Join-Path '$(AddinsRoot)' $y; ^
+        if(Test-Path $dst){ ^
+          Copy-Item '$(BuiltDll)' $dst -Force; ^
+          (Get-Content '$(AddinFile)') ^
+            -replace '\$ADDINS_DIR\$', $dst.Replace('\\','\\\\') ^
+            -replace '\$DLL_NAME\$', '$(AssemblyName).dll' |
+            Set-Content (Join-Path $dst 'CivilesPro.addin'); ^
+          Write-Host &quot;Instalado en $dst&quot;; ^
+        } ^
+      }" />
+  </Target>
+</Project>
