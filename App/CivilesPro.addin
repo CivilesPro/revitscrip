@@ -2,7 +2,7 @@
 <RevitAddIns>
   <AddIn Type="Application">
     <Name>CivilesPro.RevitTools</Name>
-    <Assembly>C:\ProgramData\Autodesk\Revit\Addins\2024\CivilesPro.RevitTools.dll</Assembly>
+    <Assembly>C:\ProgramData\Autodesk\Revit\Addins\2026\CivilesPro.RevitTools.dll</Assembly>
     <AddInId>8D83B2DC-B1E7-4C37-A9B9-3C3A7D75A001</AddInId>
     <FullClassName>CivilesPro.RevitTools.App.CivilesProApp</FullClassName>
     <VendorId>CVPR</VendorId>
