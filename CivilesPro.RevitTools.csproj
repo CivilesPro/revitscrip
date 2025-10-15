@@ -19,6 +19,7 @@
       <HintPath>$(ProgramFiles)\Autodesk\Revit 2026\RevitAPIUI.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
